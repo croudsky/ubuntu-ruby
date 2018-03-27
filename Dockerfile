@@ -14,6 +14,7 @@ RUN apt-get update -qq && \
     openjdk-8-jdk \
     openjdk-8-jdk-headless \
     graphviz \
+    unzip \
     --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
