@@ -44,6 +44,8 @@ RUN printf '#!/bin/sh\nXvfb :99 -screen 0 1280x1024x24 &\nexec "$@"\n' > /tmp/en
   && chmod +x /tmp/entrypoint \
   && mv /tmp/entrypoint /docker-entrypoint.sh
 
+RUN npm install -g yarn
+
 RUN gem install bundler rails
 RUN mkdir /app
 WORKDIR /app
