@@ -1,4 +1,5 @@
 FROM ruby:2.5
+ENV DOCKERIZE_VERSION v0.6.0
 
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
@@ -6,6 +7,7 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
     && apt-get update -qq \
     &&  apt-get install -y nodejs \
       yarn \
+      wget \
       build-essential \
       libpq-dev \
       postgresql-client \
@@ -20,7 +22,11 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
       graphviz \
       unzip \
       --no-install-recommends \
+    && wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm -rf /var/lib/apt/lists/*
+
 
 ARG CHROME_VERSION="google-chrome-stable"
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
