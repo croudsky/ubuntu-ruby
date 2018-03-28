@@ -1,23 +1,26 @@
 FROM ruby:2.5
 
-RUN apt-get update -qq && \
-    apt-get install -y nodejs \
-    npm \
-    build-essential \
-    libpq-dev \
-    postgresql-client \
-    fonts-ipafont-gothic \
-    fonts-ipafont-mincho \
-    libfontconfig \
-    libappindicator1 \
-    openjdk-8-jre \
-    openjdk-8-jre-headless \
-    openjdk-8-jdk \
-    openjdk-8-jdk-headless \
-    graphviz \
-    unzip \
-    --no-install-recommends && \
-    rm -rf /var/lib/apt/lists/*
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+    && apt-get update -qq \
+    &&  apt-get install -y nodejs \
+      yarn \
+      build-essential \
+      libpq-dev \
+      postgresql-client \
+      fonts-ipafont-gothic \
+      fonts-ipafont-mincho \
+      libfontconfig \
+      libappindicator1 \
+      openjdk-8-jre \
+      openjdk-8-jre-headless \
+      openjdk-8-jdk \
+      openjdk-8-jdk-headless \
+      graphviz \
+      unzip \
+      --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 
 ARG CHROME_VERSION="google-chrome-stable"
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
@@ -44,9 +47,6 @@ ENV DISPLAY :99
 RUN printf '#!/bin/sh\nXvfb :99 -screen 0 1280x1024x24 &\nexec "$@"\n' > /tmp/entrypoint \
   && chmod +x /tmp/entrypoint \
   && mv /tmp/entrypoint /docker-entrypoint.sh
-
-RUN node -v
-# RUN npm install -g yarn
 
 RUN gem install bundler rails
 RUN mkdir /app
