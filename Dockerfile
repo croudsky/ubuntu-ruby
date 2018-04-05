@@ -1,4 +1,4 @@
-FROM ruby:2.5
+FROM ruby:2.5.1
 ENV DOCKERIZE_VERSION v0.6.0
 
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
